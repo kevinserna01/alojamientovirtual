@@ -1,0 +1,38 @@
+INSTRUCCIONES PARA AGREGAR MÚSICA A TU CARTA DE CUMPLEAÑOS
+
+Para que tu carta de cumpleaños tenga música de fondo, sigue estos pasos:
+
+1. Descarga una canción de cumpleaños feliz o cualquier canción romántica que te guste
+   - Puedes encontrar canciones libres de derechos en sitios como Pixabay, Free Music Archive o YouTube Audio Library
+
+2. Renombra el archivo descargado como "musica_cumple.mp3"
+   - Asegúrate de que sea formato MP3 para mayor compatibilidad
+
+3. Coloca el archivo MP3 en esta carpeta "public"
+
+4. Edita el archivo main.py para agregar el reproductor de música con estas líneas:
+   
+   Agrega estos elementos dentro de la función get(), después de Html(script_interactivo):
+   
+   ```python
+   Html('<audio id="musica-fondo" loop><source src="/static/musica_cumple.mp3" type="audio/mp3"></audio>'),
+   Html('<div style="position: fixed; bottom: 20px; right: 20px; background: rgba(255,255,255,0.7); padding: 10px; border-radius: 50%; cursor: pointer; z-index: 100;" onclick="toggleMusica()">🎵</div>'),
+   ```
+   
+   Y agrega esta función JavaScript dentro del script_interactivo:
+   
+   ```javascript
+   // Función para controlar la música
+   function toggleMusica() {
+       const audio = document.getElementById('musica-fondo');
+       if (audio.paused) {
+           audio.play();
+       } else {
+           audio.pause();
+       }
+   }
+   ```
+
+5. ¡Listo! Ahora tu carta tendrá un botón para reproducir música de fondo
+
+NOTA: Si prefieres, puedes usar un enlace directo a una canción en línea, reemplazando la ruta local por una URL. 
