@@ -16,11 +16,11 @@ def static(path):
 
 @rt("/")
 def get():
-    message = """Querida Valentina,
+    message = """Sí si, lo sé…
+Tal vez para ti, tu cumpleaños no sea algo tan especial.
+Pero para mí, sí lo es.
 
-Quería tomar un momento para desearte un feliz cumpleaños de una manera un poco especial.
-
-En el poco tiempo que llevamos conociéndonos, has iluminado mis días con tu sonrisa y me has cautivado con tu forma de ser.
+Hoy no quisiera dejar pasar la oportunidad de desearte un feliz cumpleaños.
 
 Espero que este nuevo año de vida venga lleno de alegrías, sueños cumplidos y momentos inolvidables.
 
@@ -453,7 +453,7 @@ Con cariño,"""
                         P(message, cls="message"),
                         cls="message-container"
                     ),
-                    P("Kevin", cls="signature"),
+                    P("¿hamburguesa o pizza?", cls="signature"),
                     A("❤️ Gracias por ser especial", href="#", cls="button"),
                     cls="letter"
                 ),
