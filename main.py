@@ -89,12 +89,19 @@ Con cariño,"""
                   justify-content: center;
                   align-items: center;
                   min-height: 100vh;
-                  padding: 2rem;
+                  padding: 1rem;
+                  position: relative;
+                  overflow: visible;
                 }
                 
                 .envelope-container {
                   perspective: 1000px;
-                  margin-bottom: 2rem;
+                  margin-bottom: 1rem;
+                  position: fixed;
+                  top: 45%;
+                  left: 50%;
+                  transform: translate(-50%, -50%);
+                  z-index: 1;
                 }
                 
                 .envelope {
@@ -106,11 +113,11 @@ Con cariño,"""
                   box-shadow: 0 10px 25px var(--envelope-shadow);
                   cursor: pointer;
                   transform-style: preserve-3d;
-                  transition: transform 1s ease;
+                  transition: all 1s ease;
                 }
                 
                 .envelope.open {
-                  transform: rotateX(180deg);
+                  transform: rotateX(180deg) translateY(-100px);
                 }
                 
                 .envelope-front {
@@ -155,27 +162,73 @@ Con cariño,"""
                 }
                 
                 .letter {
-                  max-width: 650px;
-                  padding: 2rem;
-                  background-color: var(--paper-color);
-                  border-radius: 10px;
-                  box-shadow: 0 5px 15px var(--paper-shadow);
-                  transform: translateY(20px);
+                  position: fixed;
+                  top: 50%;
+                  left: 50%;
+                  transform: translate(-50%, 100vh);
                   opacity: 0;
-                  transition: all 0.8s ease;
+                  transition: all 1s ease;
+                  z-index: 3;
+                  background-color: var(--paper-color);
+                  padding: 1.5rem;
+                  border-radius: 15px;
+                  box-shadow: 0 10px 25px var(--paper-shadow);
+                  max-width: 90vw;
+                  width: 100%;
+                  max-width: 600px;
+                  max-height: 85vh;
+                  overflow-y: auto;
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  background-image: 
+                    linear-gradient(90deg, transparent 79px, #abced4 79px, #abced4 81px, transparent 81px),
+                    linear-gradient(#eee .1em, transparent .1em);
+                  background-size: 100% 1.5em;
                 }
                 
                 .letter.show {
-                  transform: translateY(0);
+                  transform: translate(-50%, -50%);
                   opacity: 1;
+                }
+                
+                .letter::-webkit-scrollbar {
+                  width: 8px;
+                }
+                
+                .letter::-webkit-scrollbar-track {
+                  background: var(--paper-color);
+                  border-radius: 4px;
+                }
+                
+                .letter::-webkit-scrollbar-thumb {
+                  background: var(--primary-color);
+                  border-radius: 4px;
+                }
+                
+                .message-container {
+                  width: 100%;
+                  padding: 0 0.5rem;
                 }
                 
                 .message {
                   font-size: 1.2rem;
                   line-height: 1.6;
-                  text-align: center;
-                  margin-bottom: 1.5rem;
-                  min-height: 200px;
+                  text-align: left;
+                  margin-bottom: 1rem;
+                  white-space: pre-wrap;
+                  color: var(--text-color);
+                  opacity: 0;
+                  transform: translateY(20px);
+                  transition: all 0.5s ease;
+                  width: 100%;
+                  padding: 0 0.5rem;
+                  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                }
+                
+                .message.visible {
+                  opacity: 1;
+                  transform: translateY(0);
                 }
                 
                 .signature {
@@ -183,13 +236,9 @@ Con cariño,"""
                   font-size: 1.3rem;
                   font-style: italic;
                   color: var(--primary-color);
-                }
-                
-                .typewriter {
-                  border-right: 2px solid var(--primary-color);
-                  white-space: pre-wrap;
-                  overflow: hidden;
-                  margin: 0 auto;
+                  margin-top: 0.5rem;
+                  align-self: flex-end;
+                  padding-right: 1rem;
                 }
                 
                 .button {
@@ -203,7 +252,8 @@ Con cariño,"""
                   cursor: pointer;
                   transition: all 0.3s ease;
                   text-decoration: none;
-                  margin-top: 1.5rem;
+                  margin: 1rem 0;
+                  align-self: center;
                 }
                 
                 .button:hover {
@@ -238,12 +288,51 @@ Con cariño,"""
                   }
                   
                   .letter {
-                    padding: 1.5rem;
+                    padding: 1rem;
+                    max-height: 80vh;
+                    max-width: 95vw;
                   }
                   
                   .message {
                     font-size: 1rem;
-                    min-height: 150px;
+                    line-height: 1.4;
+                    padding: 0;
+                  }
+
+                  .signature {
+                    font-size: 1.1rem;
+                    padding-right: 0.5rem;
+                  }
+
+                  .button {
+                    padding: 0.5rem 1rem;
+                    font-size: 0.9rem;
+                    margin: 0.5rem 0;
+                  }
+                }
+
+                @media (max-height: 600px) {
+                  .envelope-container {
+                    top: 40%;
+                  }
+
+                  .letter {
+                    max-height: 90vh;
+                    padding: 1rem;
+                  }
+
+                  .message {
+                    font-size: 0.9rem;
+                    line-height: 1.3;
+                    margin-bottom: 0.5rem;
+                  }
+
+                  .signature {
+                    margin-top: 0.25rem;
+                  }
+
+                  .button {
+                    margin: 0.25rem 0;
                   }
                 }
             """),
@@ -285,8 +374,8 @@ Con cariño,"""
                 ),
                 Div(
                     Div(
-                        P(message, cls="typewriter", attr={"data-message": message}),
-                        cls="message"
+                        P(message, cls="message"),
+                        cls="message-container"
                     ),
                     P("Kevin", cls="signature"),
                     A("❤️ Gracias por ser especial", href="#", cls="button"),
@@ -320,6 +409,7 @@ Con cariño,"""
                   // Envelope interaction
                   const envelope = document.querySelector('.envelope');
                   const letter = document.querySelector('.letter');
+                  const messageElement = document.querySelector('.message');
                   
                   envelope.addEventListener('click', function() {
                     this.classList.toggle('open');
@@ -329,27 +419,14 @@ Con cariño,"""
                       setTimeout(() => {
                         letter.classList.add('show');
                         setTimeout(() => {
-                          typeWriter();
+                          messageElement.classList.add('visible');
                         }, 500);
-                      }, 1000);
+                      }, 800);
                     } else {
+                      messageElement.classList.remove('visible');
                       letter.classList.remove('show');
                     }
                   });
-                  
-                  // Typewriter effect
-                  const message = document.querySelector('.typewriter');
-                  const fullText = message.getAttribute('data-message');
-                  let i = 0;
-                  message.textContent = '';
-                  
-                  function typeWriter() {
-                    if (i < fullText.length) {
-                      message.textContent += fullText.charAt(i);
-                      i++;
-                      setTimeout(typeWriter, 50); // Adjust typing speed here
-                    }
-                  }
                   
                   // Música de fondo
                   const musicBtn = document.getElementById('btn-musica');
