@@ -340,13 +340,19 @@ Con cariño,"""
         Body(
             Div(cls="animated-bg"),
             Div(cls="stars"),
-            Audio(
-                Source(src="/static/musica_cumple.mp3", type="audio/mp3"),
-                id="musica-fondo",
-                attr={"loop": ""}
+            Div(
+                id="youtube-player",
+                style="""
+                    position: fixed;
+                    bottom: -1000px;
+                    right: -1000px;
+                    z-index: -1;
+                    opacity: 0;
+                    pointer-events: none;
+                """
             ),
             Div(
-                "🔈",
+                "🎵",
                 id="btn-musica",
                 style="""
                     position: fixed;
@@ -430,15 +436,68 @@ Con cariño,"""
                   
                   // Música de fondo
                   const musicBtn = document.getElementById('btn-musica');
-                  const audio = document.getElementById('musica-fondo');
+                  const youtubePlayer = document.getElementById('youtube-player');
+                  let playerReady = false;
+                  let playerActive = false;
+                  
+                  // Cargar la API de YouTube
+                  function loadYouTubeAPI() {
+                    if (!window.YT) {
+                      const tag = document.createElement('script');
+                      tag.src = 'https://www.youtube.com/iframe_api';
+                      const firstScriptTag = document.getElementsByTagName('script')[0];
+                      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+                    }
+                  }
+                  
+                  loadYouTubeAPI();
+                  
+                  // Función que se llama cuando la API está lista
+                  window.onYouTubeIframeAPIReady = function() {
+                    playerReady = true;
+                    const player = new YT.Player('youtube-player', {
+                      height: '1',
+                      width: '1',
+                      videoId: '2ucJrszbGCs',
+                      playerVars: {
+                        'playsinline': 1,
+                        'controls': 0,
+                        'autoplay': 0,
+                        'mute': 0,
+                        'disablekb': 1,
+                        'fs': 0,
+                        'modestbranding': 1,
+                        'rel': 0
+                      },
+                      events: {
+                        'onReady': onPlayerReady
+                      }
+                    });
+                    
+                    function onPlayerReady(event) {
+                      // El reproductor está listo pero no comienza automáticamente
+                    }
+                  };
                   
                   function toggleMusica() {
-                    if (audio.paused) {
-                      audio.play();
-                      musicBtn.textContent = '🔊';
-                    } else {
-                      audio.pause();
-                      musicBtn.textContent = '🔈';
+                    if (playerReady) {
+                      if (!playerActive) {
+                        // Reproducir
+                        const player = window.YT.get('youtube-player');
+                        if (player) {
+                          player.playVideo();
+                        }
+                        musicBtn.textContent = '🔊';
+                        playerActive = true;
+                      } else {
+                        // Pausar
+                        const player = window.YT.get('youtube-player');
+                        if (player) {
+                          player.pauseVideo();
+                        }
+                        musicBtn.textContent = '🎵';
+                        playerActive = false;
+                      }
                     }
                   }
                   
