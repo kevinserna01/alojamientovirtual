@@ -335,6 +335,67 @@ Con cariño,"""
                     margin: 0.25rem 0;
                   }
                 }
+
+                /* Modal Styles */
+                .modal {
+                    display: none;
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(0, 0, 0, 0.8);
+                    z-index: 1000;
+                    opacity: 0;
+                    transition: opacity 0.3s ease;
+                }
+
+                .modal.show {
+                    display: flex;
+                    opacity: 1;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                .modal-content {
+                    background-color: var(--paper-color);
+                    padding: 1rem;
+                    border-radius: 15px;
+                    position: relative;
+                    max-width: 90vw;
+                    max-height: 90vh;
+                    transform: scale(0.7);
+                    transition: transform 0.3s ease;
+                    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+                }
+
+                .modal.show .modal-content {
+                    transform: scale(1);
+                }
+
+                .modal-close {
+                    position: absolute;
+                    top: -15px;
+                    right: -15px;
+                    width: 30px;
+                    height: 30px;
+                    background-color: var(--primary-color);
+                    border: none;
+                    border-radius: 50%;
+                    color: white;
+                    font-size: 1.2rem;
+                    cursor: pointer;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                }
+
+                .modal-image {
+                    max-width: 100%;
+                    max-height: 80vh;
+                    border-radius: 10px;
+                }
             """),
         ),
         Body(
@@ -364,6 +425,15 @@ Con cariño,"""
                     cursor: pointer;
                     z-index: 100;
                 """
+            ),
+            Div(
+                Div(
+                    Button("×", cls="modal-close"),
+                    Img(src="../public/static/imagen_especial.png", cls="modal-image", alt="Imagen Especial"),
+                    cls="modal-content"
+                ),
+                id="special-modal",
+                cls="modal"
             ),
             Div(
                 Div(
@@ -431,6 +501,33 @@ Con cariño,"""
                     } else {
                       messageElement.classList.remove('visible');
                       letter.classList.remove('show');
+                    }
+                  });
+                  
+                  // Modal functionality
+                  const modal = document.getElementById('special-modal');
+                  const specialButton = document.querySelector('.button');
+                  const closeButton = document.querySelector('.modal-close');
+                  
+                  specialButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    modal.classList.add('show');
+                  });
+                  
+                  closeButton.addEventListener('click', function() {
+                    modal.classList.remove('show');
+                  });
+                  
+                  modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                      modal.classList.remove('show');
+                    }
+                  });
+                  
+                  // Cerrar modal con la tecla Escape
+                  document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && modal.classList.contains('show')) {
+                      modal.classList.remove('show');
                     }
                   });
                   
